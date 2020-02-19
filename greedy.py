@@ -1,4 +1,4 @@
-# from collections import defaultdict
+import csv
 #
 # class Graph(object):
 #     """ Graph data structure, undirected by default. """
@@ -57,6 +57,11 @@
 #     def __str__(self):
 #         return '{}({})'.format(self.__class__.__name__, dict(self._graph))
 
+# #Reading log file-------------------------------------------------------------------------------------
+# with open('') as logfile:
+#     readCSV = csv.reader(logfile, delimiter=',')
+
+
 def get_graph(agents, observations):
     graph={}
 
@@ -81,7 +86,7 @@ def get_graph(agents, observations):
     print("As done in step one, each list of candidate edges are marked unexplained with 0 in the end of each list: ")
     print(candidates);print("\n")
 
-    return greedy(candidates)
+    return make_graph(greedy(candidates))
 
 #Function to get windows------------------------------------------------------------------------------------------------
 def get_windows(agents,observations):
@@ -172,6 +177,19 @@ def get_edges(all_candidates):
             edges.update({str(edge): count})
     return edges
 
+def make_graph(edges):
+    #Code from Wiliam
+    graph={}
+    for i in range(0, len(edges)-1):
+        if edges[i][0] not in graph:
+            graph[edges[i][0]]=[edges[i][1]]
+        elif edges[i][0] in graph:
+            graph.get(edges[i][0]).append(edges[i][1])
+        if edges[i][1] not in graph:
+            graph[edges[i][1]]=[edges[i][0]]
+        elif edges[i][1] in graph:
+            graph.get(edges[i][1]).append(edges[i][0])
+    return graph
 
 O=["A","C","D","E","B","F","A","D"]
 agentsAssumed=4
